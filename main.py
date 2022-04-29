@@ -96,7 +96,7 @@ if __name__ == '__main__':
 
     find_size_zero_files(rootDir)
     find_corrupted_images(rootDir)
-    #find_corrupt_pdfs(r"C:\Users\Jay\Desktop\Drive_Management\FileMetaDataManager\ExampleDirectory")
+    #find_corrupt_pdfs(r"")
     #checkPDFs(dirpath = "D:/Drive_Three/Library/Admin Programs")
 
      # print("""\
@@ -151,7 +151,7 @@ if __name__ == '__main__':
 
 # '''
 # import os, sys
-# os.chdir("C:\\Users\\jborthen\\Desktop\\FileMetaDataManager")
+# os.chdir("")
 # execfile("BasicDirectoryTraversal.py")
 # '''
 
