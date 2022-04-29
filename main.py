@@ -26,7 +26,7 @@ def find_size_zero_files(filepath):
 
 
 ## PDFs
-def find_corrupt_pdfs(filepath):
+def find_corrupted_pdfs(filepath):
     ##  Find corrupt pdfs
     potentially_corrupted_files = []
     pdfCount = 0
@@ -54,7 +54,7 @@ def find_corrupt_pdfs(filepath):
 
 
 
-def find_corrupt_images(dirpath):
+def find_corrupted_images(dirpath):
      for filename in os.listdir(dirpath):
           if filename.endswith('.jpg') or filename.endswith('.png'):
                 try:
@@ -66,8 +66,8 @@ def find_corrupt_images(dirpath):
                     print(os.path.join(dirpath + "\\" + filename))
 
 
-## Find corrupt image files
-def get_corrupt_images(filepath):
+## Find corrupted image files
+def get_corrupted_images(filepath):
     d = []
     for dirpath, dirnames, filenames in os.walk(filepath):
         for filename in filenames:
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     print("\n\rSearching in \"", rootDir, "\"...\n\r", sep = "")
 
     find_size_zero_files(rootDir)
-    find_corrupt_images(rootDir)
+    find_corrupted_images(rootDir)
     #find_corrupt_pdfs(r"C:\Users\Jay\Desktop\Drive_Management\FileMetaDataManager\ExampleDirectory")
     #checkPDFs(dirpath = "D:/Drive_Three/Library/Admin Programs")
 
