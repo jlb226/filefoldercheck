@@ -56,31 +56,14 @@ def find_corrupted_pdfs(filepath):
 
 def find_corrupted_images(dirpath):
      for filename in os.listdir(dirpath):
-          if filename.endswith('.jpg') or filename.endswith('.png'):
+          if filename.endswith('.jpg') or filename.endswith('.png') or (filename.endswith('.jpeg')):
                 try:
                     img = Image.open(dirpath + '/' + filename)
                     img.verify()
                 except (IOError, SyntaxError):
                     ## Print the names of potentially corrupted files
-                    print('\n\rPotentially corrupted files:\n\r')
+                    print('\n\rPotentially corrupted images:\n\r')
                     print(os.path.join(dirpath + "\\" + filename))
-
-
-## Find corrupted image files
-def get_corrupted_images(filepath):
-    d = []
-    for dirpath, dirnames, filenames in os.walk(filepath):
-        for filename in filenames:
-            filename = str.lower(filename)
-            if (filename.endswith('.png')) or (filename.endswith('.jpg')) or (filename.endswith('.jpeg')):
-                try:
-                  img = Image.open(os.path.join(dirpath, filename))  # open the image file
-                  img.verify() # verify that it is, in fact, an image
-                  img.close()
-                except (IOError, SyntaxError):
-                  d.append(os.path.join(dirpath + "\\" + filename))
-                  #print('Bad file:', os.path.join(dirpath + "\\" + filename)) # print out the names of corrupt files
-    return d
 
 
 def find_duplicate_files(filepath):
@@ -96,7 +79,7 @@ if __name__ == '__main__':
 
     find_size_zero_files(rootDir)
     find_corrupted_images(rootDir)
-    #find_corrupt_pdfs(r"C:\Users\Jay\Desktop\Drive_Management\FileMetaDataManager\ExampleDirectory")
+    find_corrupted_pdfs(rootDir)
     #checkPDFs(dirpath = "D:/Drive_Three/Library/Admin Programs")
 
      # print("""\
@@ -151,7 +134,7 @@ if __name__ == '__main__':
 
 # '''
 # import os, sys
-# os.chdir("C:\\Users\\jborthen\\Desktop\\FileMetaDataManager")
+# os.chdir("")
 # execfile("BasicDirectoryTraversal.py")
 # '''
 
