@@ -9,65 +9,51 @@ from PIL import Image
 
 
 def find_size_zero_files(filepath):
-    ##  Find empty files
     d = []
     for dirpath, dirnames, filenames in os.walk(filepath):
         for filename in filenames:
-            #print(filename)
-            if (os.stat(os.path.join(dirpath + "\\" + filename)).st_size == 0) and d == []:
-                ## Print the names of potentially corrupted files
-                print('\n\rSize-zero files:\n\r')
+            if (os.stat(os.path.join(dirpath + "\\" + filename)).st_size == 0):
+                if d == []:
+                    print('\n\rSize-zero files:\n\r')
                 d.append(os.path.join(dirpath + "\\" + filename))
                 print(os.path.join(dirpath + "\\" + filename))
-            elif os.stat(os.path.join(dirpath + "\\" + filename)).st_size == 0:
-                d.append(os.path.join(dirpath + "\\" + filename))
-                print(os.path.join(dirpath + "\\" + filename))
-    return
 
 
-## PDFs
-def find_corrupted_pdfs(filepath):
-    ##  Find corrupt pdfs
-    potentially_corrupted_files = []
-    pdfCount = 0
-    badFileCount = 0
+
+def find_corrupted_images(filepath):
+    i = 0
     for dirpath, dirnames, filenames in os.walk(filepath):
         for filename in filenames:
-            if os.stat(os.path.join(dirpath + "\\" + filename).endswith('.pdf')):
-                 potentially_corrupted_files.append(os.path.join(dirpath + "\\" + filename))
-                 # print(os.path.join(dirpath + "\\" + filename + "\n"))
-            # if filename.endswith('.pdf'):
-                 pdfCount = pdfCount + 1
-                 try:
-                    PyPDF2.PdfFileReader(dirpath + '\\' + filename)
-                 except:
-                    if(badFileCount == 0):
-                        # print('Potentially corrupted files: ')
-                        potentially_corrupted_files = potentially_corrupted_files.append(os.path.join(dirpath + "\\" + filename + "\n"))
-                    badFileCount = badFileCount + 1
-                    print(str(badFileCount) + ')  ' + dirpath + '\\' + filename)
-    print('Total Number of PDF files found:  ' + str(pdfCount))
-    print('Number of potentially corrupted PDF files found:  ' + str(badFileCount) + '\n')
-    print('Potentially corrupted files: ')
-    # print(potentially_corrupted_files)
-    return potentially_corrupted_files
-
-
-
-def find_corrupted_images(dirpath):
-     for filename in os.listdir(dirpath):
-          if filename.endswith('.jpg') or filename.endswith('.png') or (filename.endswith('.jpeg')):
+            if filename.endswith('.jpg') or filename.endswith('.png') or (filename.endswith('.jpeg')):
                 try:
                     img = Image.open(dirpath + '/' + filename)
                     img.verify()
                 except (IOError, SyntaxError):
-                    ## Print the names of potentially corrupted files
-                    print('\n\rPotentially corrupted images:\n\r')
+                    if i == 0:
+                        i = 1
+                        print('\n\rPotentially corrupted images:\n\r')
                     print(os.path.join(dirpath + "\\" + filename))
 
 
-def find_duplicate_files(filepath):
+
+def find_corrupted_pdfs(filepath):
+    i = 0
+    for dirpath, dirnames, filenames in os.walk(filepath):
+        for filename in filenames:
+            if filename.endswith('.pdf'):
+                try:
+                    PyPDF2.PdfFileReader(dirpath + '\\' + filename, strict = False)
+                except:  #(IOError, SyntaxError):
+                    if i == 0:
+                        i = 1
+                        print('\n\rPotentially corrupted PDF files:\n\r')
+                    print(os.path.join(dirpath + "\\" + filename))
+
+
+
+def find_duplicated_files(filepath):
     pass
+
 
 
 if __name__ == '__main__':
