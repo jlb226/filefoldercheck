@@ -2,10 +2,10 @@
 # -*- coding: utf8 -*-
 
 import os
-# import pikepdf
 import PyPDF2
 from PIL import Image
-
+from pathlib import Path
+from filecmp import cmp
 
 
 def find_size_zero_files(filepath):
@@ -52,7 +52,40 @@ def find_corrupted_pdfs(filepath):
 
 
 def find_duplicated_files(filepath):
-    pass
+    # list of all documents
+    DATA_DIR = Path(filepath)
+    files = sorted(os.listdir(DATA_DIR))
+
+    # List having the classes of documents
+    # with the same content
+    duplicateFiles = []
+
+    # comparison of the documents
+    for file_x in files:
+
+        if_dupl = False
+
+        for class_ in duplicateFiles:
+            # Comparing files having same content using cmp()
+            # class_[0] represents a class having same content
+            if_dupl = cmp(
+                DATA_DIR / file_x,
+                DATA_DIR / class_[0],
+                shallow=False
+            )
+            if if_dupl:
+                class_.append(file_x)
+                break
+
+        if not if_dupl:
+            duplicateFiles.append([file_x])
+
+    print('\n\rPotentially duplicated files:\n\r')
+    print(duplicateFiles)
+
+
+
+
 
 
 
@@ -66,13 +99,7 @@ if __name__ == '__main__':
     find_size_zero_files(rootDir)
     find_corrupted_images(rootDir)
     find_corrupted_pdfs(rootDir)
-    #checkPDFs(dirpath = "D:/Drive_Three/Library/Admin Programs")
-
-     # print("""\
-     # Usage: thingy [OPTIONS]
-     #      -h                        Display this usage message
-     #      -H hostname               Hostname to connect to
-     # """)
+    find_duplicated_files(rootDir)
 
 
 
@@ -112,24 +139,4 @@ if __name__ == '__main__':
           # # closing the pdf file object
           # pdfFileObj.close()
 
-
-
-##  Basic directory traversal
-##  Import the os module, for the os.walk function
-#import os
-
-# '''
-# import os, sys
-# os.chdir("")
-# execfile("BasicDirectoryTraversal.py")
-# '''
-
-# rootDir = input("Input top-level directory: ")
-# print('\r\n')
-# for fullPath, subdirList, fileList in os.walk(rootDir):
-# 	folderName=str(fullPath).split(rootDir)
-# 	print(('\t'*str(folderName[1]).count('\\'))+ '+ Found directory: "...%s"\r\n' % folderName[1])
-# 	for i, fname in enumerate(fileList, start=1):
-# 		print('{:<45}'.format(('\t'*(1+str(folderName[1]).count('\\')))+str(i)+")  "+fname)+'{:<5}'.format("Size: ") + '{:>12}'.format(str(round(((os.stat(fullPath+"\\"+fname)[6])/1000.0),1))+" KB"))
-# 	print('\r\n')
 
